@@ -63,6 +63,9 @@ def test_batch_export_backfill(client: HttpClient):
 def test_batch_export_backfill_with_non_isoformatted_dates(client: HttpClient):
     """Test a BatchExport backfill fails if we pass malformed dates."""
     temporal = sync_connect()
+        body = response.json()
+        assert body['export_id'] == batch_export_id
+        assert body['type'] == 'Backfill'
 
     destination_data = {
         "type": "S3",
