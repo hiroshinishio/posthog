@@ -530,6 +530,20 @@ async def acreate_batch_export_run(
 def update_batch_export_run(
     run_id: UUID,
     **kwargs,
+    workflow_id_json = {
+        "export_id": inputs.batch_export_id,
+        "type": "Backfill",
+        "start_at": inputs.start_at,
+        "end_at": inputs.end_at
+    }
+    await temporal.start_workflow(
+        "backfill-batch-export",
+        inputs,
+        id=workflow_id,
+        task_queue=BATCH_EXPORTS_TASK_QUEUE,
+    )
+
+    return workflow_id_json
 ) -> BatchExportRun:
     """Update the BatchExportRun with given run_id and provided **kwargs.
 
