@@ -485,6 +485,13 @@ def create_batch_export_run(
         data_interval_end: The end of the period of data exported in this BatchExportRun.
         status: The initial status for the created BatchExportRun.
     """
+   workflow_metadata = {
+       "export_id": inputs.batch_export_id,
+       "type": "Backfill",
+       "start_at": inputs.start_at,
+       "end_at": inputs.end_at,
+   }
+   return workflow_metadata
     run = BatchExportRun(
         batch_export_id=batch_export_id,
         status=status,
