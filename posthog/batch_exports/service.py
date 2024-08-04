@@ -1,5 +1,8 @@
 import datetime as dt
 import typing
+from django.http import JsonResponse, HttpResponse
+from rest_framework import status
+from uuid import UUID
 from dataclasses import asdict, dataclass, fields
 from uuid import UUID
 
@@ -456,15 +459,23 @@ def backfill_export(
 @async_to_sync
 async def start_backfill_batch_export_workflow(temporal: Client, inputs: BackfillBatchExportInputs) -> str:
     """Async call to start a BackfillBatchExportWorkflow."""
-    workflow_id = f"{inputs.batch_export_id}-Backfill-{inputs.start_at}-{inputs.end_at}"
+    workflow_id = inputs.batch_export_id
+    response_format = {
+        "export_id": inputs.batch_export_id,
+        "type": "Backfill",
+        "start_at": inputs.start_at,
+        "end_at": inputs.end_at
+    }
     await temporal.start_workflow(
         "backfill-batch-export",
         inputs,
         id=workflow_id,
+        status_code=status.HTTP_200_OK,
         task_queue=BATCH_EXPORTS_TASK_QUEUE,
     )
 
-    return workflow_id
+    return JsonResponse(response_format) \
+        if request.query_params.get('format') == 'json' else HttpResponse(f"{workflow_id}-Backfill-{inputs.start_at}-{inputs.end_at}")
 
 
 def create_batch_export_run(
