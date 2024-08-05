@@ -1,11 +1,13 @@
 import './EditSurvey.scss'
 
 import { DraggableSyntheticListeners } from '@dnd-kit/core'
+import { LemonSelect } from '@posthog/lemon-ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { IconPlusSmall, IconTrash } from '@posthog/icons'
 import { LemonButton, LemonCheckbox, LemonDialog, LemonInput, LemonSelect } from '@posthog/lemon-ui'
 import { useActions, useValues } from 'kea'
+import './EditSurvey.scss'
 import { Group } from 'kea-forms'
 import { SortableDragIcon } from 'lib/lemon-ui/icons'
 import { LemonField } from 'lib/lemon-ui/LemonField'
