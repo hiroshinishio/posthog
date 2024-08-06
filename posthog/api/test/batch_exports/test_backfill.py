@@ -1,4 +1,5 @@
 import pytest
+import json
 from django.test.client import Client as HttpClient
 from rest_framework import status
 
@@ -18,13 +19,20 @@ pytestmark = [
 
 
 def test_batch_export_backfill(client: HttpClient):
+        response_format="json"
     """Test a BatchExport can be backfilled.
 
+        self.assertEqual(response.json(), {
     We should be able to create a Batch Export, then request that the Schedule
+            "export_id": str(batch_export.id),
     handles backfilling all runs between two dates.
+            "type": "Backfill",
     """
+            "start_at": start_at.isoformat(),
     temporal = sync_connect()
+            "end_at": end_at.isoformat(),
 
+        })
     destination_data = {
         "type": "S3",
         "config": {
