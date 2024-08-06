@@ -58,6 +58,12 @@ def test_batch_export_backfill(client: HttpClient):
             "2021-01-01T01:00:00",
         )
         assert response.status_code == status.HTTP_200_OK, response.json()
+        assert response.json() == {
+            "export_id": batch_export_id,
+            "type": "Backfill",
+            "start_at": "2021-01-01T00:00:00",
+            "end_at": "2021-01-01T01:00:00",
+        }
 
 
 def test_batch_export_backfill_with_non_isoformatted_dates(client: HttpClient):
