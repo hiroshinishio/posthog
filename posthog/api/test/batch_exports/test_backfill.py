@@ -1,4 +1,14 @@
 import pytest
+    def test_backfill_response_format(self):
+        response = self.client.post(
+            f"/api/projects/{self.team.id}/batch_exports/{self.batch_export.id}/backfill",
+            {"start_at": "2023-01-01T00:00:00Z", "end_at": "2023-01-02T00:00:00Z"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("export_id", response.json())
+        self.assertIn("start_at", response.json())
+        self.assertIn("end_at", response.json())
 from django.test.client import Client as HttpClient
 from rest_framework import status
 
