@@ -48,6 +48,22 @@ def test_batch_export_backfill(client: HttpClient):
 
     with start_test_worker(temporal):
         batch_export = create_batch_export_ok(client, team.pk, batch_export_data)
+    
+    def test_backfill_batch_export_json_format(self):
+        start_at = "2023-01-01T00:00:00Z"
+        end_at = "2023-01-02T00:00:00Z"
+        response = self.client.post(
+            f"/api/projects/{self.team.id}/batch_exports/{self.batch_export.id}/backfill?format=json",
+            {"start_at": start_at, "end_at": end_at},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            "export_id": str(self.batch_export.id),
+            "type": "Backfill",
+            "start_at": start_at,
+            "end_at": end_at
+        })
         batch_export_id = batch_export["id"]
 
         response = backfill_batch_export(
