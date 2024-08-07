@@ -1,4 +1,5 @@
 import pytest
+import json
 from django.test.client import Client as HttpClient
 from rest_framework import status
 
@@ -18,6 +19,22 @@ pytestmark = [
 
 
 def test_batch_export_backfill(client: HttpClient):
+    def test_backfill_response_format_json(self):
+        response = self.client.post(
+            f"/api/projects/{self.team.id}/batch_exports/{self.batch_export.id}/backfill",
+            {"start_at": "2023-01-01T00:00:00Z", "end_at": "2023-01-02T00:00:00Z"},
+            HTTP_ACCEPT="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "export_id": str(self.batch_export.id),
+                "type": "Backfill",
+                "start_at": "2023-01-01T00:00:00Z",
+                "end_at": "2023-01-02T00:00:00Z",
+            },
+        )
     """Test a BatchExport can be backfilled.
 
     We should be able to create a Batch Export, then request that the Schedule
