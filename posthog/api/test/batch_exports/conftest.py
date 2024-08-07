@@ -106,3 +106,4 @@ def temporal():
     client = sync_connect()
     yield client
     cleanup_temporal_schedules(client)
+    cleanup_temporal_schedules(client)
