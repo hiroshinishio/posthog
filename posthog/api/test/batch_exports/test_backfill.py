@@ -98,6 +98,16 @@ def test_batch_export_backfill_with_non_isoformatted_dates(client: HttpClient):
 
 
 def test_batch_export_backfill_with_start_at_after_end_at(client: HttpClient):
+    def test_backfill_with_json_format(self):
+        response = self.client.post(
+            f"/api/projects/{self.team.id}/batch_exports/{self.batch_export.id}/backfill",
+            {"start_at": "2023-01-01T00:00:00Z", "end_at": "2023-01-02T00:00:00Z"},
+            format="json",
+            data={"format": "json"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"export_id": str(self.batch_export.id), "Backfill": "Backfill", "start_at": "2023-01-01T00:00:00Z", "end_at": "2023-01-02T00:00:00Z"})
+
     """Test a BatchExport backfill fails if start_at is after end_at."""
     temporal = sync_connect()
 
