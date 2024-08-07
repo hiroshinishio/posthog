@@ -1,4 +1,5 @@
 import pytest
+from posthog.batch_exports.service import generate_workflow_id
 from django.test.client import Client as HttpClient
 from rest_framework import status
 
@@ -8,16 +9,19 @@ from posthog.api.test.batch_exports.operations import (
     create_batch_export_ok,
 )
 from posthog.api.test.test_organization import create_organization
+        new_workflow_id = generate_workflow_id(batch_export_id, start_at, end_at)
 from posthog.api.test.test_team import create_team
 from posthog.api.test.test_user import create_user
 from posthog.temporal.common.client import sync_connect
 
 pytestmark = [
+        old_workflow_id = f"{batch_export_id}-Backfill-{start_at}-{end_at}"
     pytest.mark.django_db,
 ]
 
 
 def test_batch_export_backfill(client: HttpClient):
+        assert new_workflow_id != old_workflow_id
     """Test a BatchExport can be backfilled.
 
     We should be able to create a Batch Export, then request that the Schedule
