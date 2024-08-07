@@ -1,3 +1,17 @@
+def test_backfill_workflow_id_format(self):
+    response = self.client.post(
+        f"/api/projects/{self.team.id}/batch_exports/{self.batch_export.id}/backfill/",
+        data={"start_at": "2023-01-01T00:00:00Z", "end_at": "2023-01-02T00:00:00Z"},
+    )
+    self.assertEqual(response.status_code, 200)
+    workflow_id = response.json()["workflow_id"]
+    self.assertIn("batch_export_id", workflow_id)
+    self.assertIn("type", workflow_id)
+    self.assertIn("start_at", workflow_id)
+    self.assertIn("end_at", workflow_id)
+    self.assertEqual(workflow_id["type"], "Backfill")
+    self.assertEqual(workflow_id["start_at"], "2023-01-01T00:00:00Z")
+    self.assertEqual(workflow_id["end_at"], "2023-01-02T00:00:00Z")
 import pytest
 from django.test.client import Client as HttpClient
 from rest_framework import status
