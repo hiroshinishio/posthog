@@ -198,7 +198,7 @@ async def backfill_schedule(inputs: BackfillScheduleInputs) -> None:
         workflow_handle = await client.start_workflow(
             schedule_action.workflow,
             *args,
-            id=f"{description.id}-{backfill_end_at:%Y-%m-%dT%H:%M:%S}Z",
+            id=f"{description.id}_{backfill_end_at:%Y-%m-%dT%H:%M:%S}Z",
             task_queue=schedule_action.task_queue,
             run_timeout=schedule_action.run_timeout,
             task_timeout=schedule_action.task_timeout,
