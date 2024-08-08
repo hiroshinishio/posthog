@@ -1,4 +1,5 @@
 import pytest
+import re
 from django.test.client import Client as HttpClient
 from rest_framework import status
 
@@ -8,7 +9,9 @@ from posthog.api.test.batch_exports.operations import (
     create_batch_export_ok,
 )
 from posthog.api.test.test_organization import create_organization
+        workflow_id_pattern = re.compile(r"^[\w-]+_Backfill_[\w:-]+_[\w:-]+$")
 from posthog.api.test.test_team import create_team
+        assert workflow_id_pattern.match(response.json()["workflow_id"])
 from posthog.api.test.test_user import create_user
 from posthog.temporal.common.client import sync_connect
 
