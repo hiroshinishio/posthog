@@ -456,7 +456,7 @@ def backfill_export(
 @async_to_sync
 async def start_backfill_batch_export_workflow(temporal: Client, inputs: BackfillBatchExportInputs) -> str:
     """Async call to start a BackfillBatchExportWorkflow."""
-    workflow_id = f"{inputs.batch_export_id}-Backfill-{inputs.start_at}-{inputs.end_at}"
+    workflow_id = f"{inputs.batch_export_id}~Backfill~{inputs.start_at}~{inputs.end_at}"
     await temporal.start_workflow(
         "backfill-batch-export",
         inputs,
