@@ -293,4 +293,4 @@ class BatchExportBackfill(UUIDModel):
     def workflow_id(self) -> str:
         """Return the Workflow id that corresponds to this BatchExportBackfill model."""
         end_at = self.end_at and self.end_at.isoformat()
-        return f"{self.batch_export.id}-Backfill-{self.start_at.isoformat()}-{end_at}"
+        return f"{self.batch_export.id}_Backfill_{self.start_at.isoformat()}_{end_at}"
