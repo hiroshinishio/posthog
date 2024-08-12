@@ -24,7 +24,7 @@ class Command(BaseCommand):
             help="Inputs for the workflow to execute",
         )
         parser.add_argument(
-            "--workflow-id",
+            "--workflow_id",
             default=str(uuid4()),
             help=(
                 "Optionally, set an id for this workflow. If the ID is already in use, "
