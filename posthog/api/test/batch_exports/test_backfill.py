@@ -54,7 +54,7 @@ def test_batch_export_backfill(client: HttpClient):
             client,
             team.pk,
             batch_export_id,
-            "2021-01-01T00:00:00",
+            "2021-01-01T00:00:00~2021-01-01T01:00:00",
             "2021-01-01T01:00:00",
         )
         assert response.status_code == status.HTTP_200_OK, response.json()
@@ -90,10 +90,10 @@ def test_batch_export_backfill_with_non_isoformatted_dates(client: HttpClient):
 
         batch_export_id = batch_export["id"]
 
-        response = backfill_batch_export(client, team.pk, batch_export_id, "not a date", "2021-01-01T01:00:00")
+        response = backfill_batch_export(client, team.pk, batch_export_id, "not a date", "2021-01-01T01:00:00~not a date")
         assert response.status_code == status.HTTP_400_BAD_REQUEST, response.json()
 
-        response = backfill_batch_export(client, team.pk, batch_export_id, "2021-01-01T01:00:00", "not a date")
+        response = backfill_batch_export(client, team.pk, batch_export_id, "2021-01-01T01:00:00~not a date", "2021-01-01T01:00:00")
         assert response.status_code == status.HTTP_400_BAD_REQUEST, response.json()
 
 
@@ -131,7 +131,7 @@ def test_batch_export_backfill_with_start_at_after_end_at(client: HttpClient):
             client,
             team.pk,
             batch_export_id,
-            "2021-01-01T01:00:00",
+            "2021-01-01T01:00:00~2021-01-01T01:00:00",
             "2021-01-01T01:00:00",
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST, response.json()
@@ -140,7 +140,7 @@ def test_batch_export_backfill_with_start_at_after_end_at(client: HttpClient):
             client,
             team.pk,
             batch_export_id,
-            "2021-01-01T01:00:00",
+            "2021-01-01T01:00:00~2020-01-01T01:00:00",
             "2020-01-01T01:00:00",
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST, response.json()
@@ -184,7 +184,7 @@ def test_cannot_trigger_backfill_for_another_organization(client: HttpClient):
             client,
             team.pk,
             batch_export_id,
-            "2021-01-01T00:00:00",
+            "2021-01-01T00:00:00~2021-01-01T01:00:00",
             "2021-01-01T01:00:00",
         )
 
@@ -225,7 +225,7 @@ def test_backfill_is_partitioned_by_team_id(client: HttpClient):
             client,
             other_team.pk,
             batch_export_id,
-            "2021-01-01T00:00:00",
+            "2021-01-01T00:00:00~2021-01-01T01:00:00",
             "2021-01-01T01:00:00",
         )
 
