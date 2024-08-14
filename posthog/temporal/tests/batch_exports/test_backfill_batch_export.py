@@ -496,7 +496,7 @@ async def test_backfill_batch_export_workflow_is_cancelled_on_repeated_failures(
     # Need to recreate the specific ID the app would use when triggering a backfill
     start_at_str = start_at.isoformat()
     end_at_str = end_at.isoformat()
-    backfill_id = f"{failing_s3_batch_export.id}-Backfill-{start_at_str}-{end_at_str}"
+    backfill_id = f"{failing_s3_batch_export.id}_Backfill_{start_at_str}_{end_at_str}"
 
     handle = await temporal_client.start_workflow(
         BackfillBatchExportWorkflow.run,
